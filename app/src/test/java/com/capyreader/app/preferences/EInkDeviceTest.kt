@@ -47,8 +47,7 @@ class EInkDeviceTest {
         EInkDevice.applyDefaults(appPreferences, isEInk = true)
 
         assertTrue(appPreferences.reduceMotion.get())
-        assertTrue(appPreferences.readerOptions.enablePagingTapGesture.get())
-        assertTrue(appPreferences.readerOptions.enablePageTurnKeys.get())
+        assertTrue(appPreferences.eInkScrollbar.get())
         assertEquals(AppTheme.MONOCHROME, appPreferences.appTheme.get())
 
         appPreferences.reduceMotion.set(false)
@@ -71,7 +70,7 @@ class EInkDeviceTest {
         EInkDevice.applyDefaults(appPreferences, isEInk = false)
 
         assertFalse(appPreferences.reduceMotion.get())
-        assertFalse(appPreferences.readerOptions.enablePageTurnKeys.get())
+        assertFalse(appPreferences.eInkScrollbar.get())
         assertFalse(appPreferences.eInkDefaultsApplied.get())
         assertFalse(appPreferences.appTheme.isSet())
     }

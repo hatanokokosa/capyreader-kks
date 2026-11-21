@@ -14,9 +14,7 @@ data class Feed(
     val itunesImageURL: String? = null,
     /** Unread count */
     override val count: Long = 0,
-    val enableStickyFullContent: Boolean = false,
     val enableNotifications: Boolean = false,
-    val openArticlesInBrowser: Boolean = false,
     val folderExpanded: Boolean = false,
     val priority: FeedPriority? = null,
     val showUnreadBadge: Boolean = true,

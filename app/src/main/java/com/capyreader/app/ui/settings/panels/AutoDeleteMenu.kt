@@ -18,7 +18,7 @@ fun AutoDeleteMenu(
     autoDelete: AutoDelete,
     updateAutoDelete: (interval: AutoDelete) -> Unit,
 ) {
-    val options = AutoDelete.entries.filterNot { it == AutoDelete.DISABLED }
+    val options = AutoDelete.entries
 
     Column(
         modifier = Modifier.padding(bottom = 16.dp),

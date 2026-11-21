@@ -3,8 +3,6 @@ SELECT
   articles.*,
   feeds.title AS feed_title,
   feeds.favicon_url,
-  feeds.enable_sticky_full_content,
-  feeds.open_articles_in_browser,
   feeds.feed_url,
   feeds.site_url,
   feeds.read_later,

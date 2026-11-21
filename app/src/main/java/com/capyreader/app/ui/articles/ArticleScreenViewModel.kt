@@ -72,7 +72,6 @@ class ArticleScreenViewModel(
     private val appPreferences: AppPreferences,
     private val application: Application,
     private val notificationHelper: NotificationHelper,
-    private val articleCutoff: ArticleSessionCutoff,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val computeDispatcher: CoroutineDispatcher = Dispatchers.Default,
     private val syncFlushInterval: Duration? = SYNC_FLUSH_INTERVAL,
@@ -89,6 +88,9 @@ class ArticleScreenViewModel(
     private val listSession = MutableStateFlow(
         ListSession(filter = appPreferences.filter.get(), since = OffsetDateTime.now())
     )
+
+    internal val listSessionSince: OffsetDateTime
+        get() = listSession.value.since
 
     private val _filter = MutableStateFlow(listSession.value.filter)
 
@@ -747,8 +749,6 @@ class ArticleScreenViewModel(
     private fun startListSession(filter: ArticleFilter) {
         val session = ListSession(filter = filter, since = OffsetDateTime.now().plusSeconds(1))
         listSession.value = session
-        // Share the list's session cutoff so the reader's neighbor pinning matches the list exactly.
-        articleCutoff.set(session.since)
     }
 
     private fun copyFolderCounts(
@@ -806,13 +806,6 @@ class ArticleScreenViewModel(
     fun expandFolder(folderName: String, expanded: Boolean) {
         viewModelScope.launchIO {
             account.expandFolder(folderName, expanded = expanded)
-        }
-    }
-
-    fun updateOpenInBrowser(feedID: String, enabled: Boolean) {
-        viewModelScope.launchIO {
-            account.updateOpenInBrowser(feedID, enabled = enabled)
-            WidgetUpdater.update(context = application.applicationContext)
         }
     }
 

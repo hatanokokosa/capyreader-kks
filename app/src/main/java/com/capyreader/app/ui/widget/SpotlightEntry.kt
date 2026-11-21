@@ -7,5 +7,4 @@ data class SpotlightEntry(
     val title: String,
     val imageURL: String?,
     val articleURL: String?,
-    val openInBrowser: Boolean,
 )

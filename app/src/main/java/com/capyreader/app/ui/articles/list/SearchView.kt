@@ -35,18 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.capyreader.app.R
 import com.capyreader.app.ui.articles.ArticleList
-import com.capyreader.app.ui.articles.ScrollToSelectedArticleEffect
-import com.capyreader.app.ui.articles.listPaneInsets
 import com.capyreader.app.ui.components.ArticleSearch
 import com.capyreader.app.ui.components.SearchTextField
 import com.jocmp.capy.Article
 import com.jocmp.capy.MarkRead
 
 /**
- * Full-surface search overlay. It owns its own results pager so the list (and therefore the
- * reader's neighbor query) underneath keeps the base filter untouched. Shown while
- * [ArticleSearch.isActive]; search stays active when a result is selected so two-pane
- * layouts keep the results visible next to the reader.
+ * Full-surface search overlay. It owns its own results pager so the list underneath keeps the
+ * base filter untouched.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +50,6 @@ fun SearchView(
     search: ArticleSearch,
     results: LazyPagingItems<Article>,
     listState: LazyListState,
-    selectedArticleID: String?,
     dimReadArticles: Boolean,
     enableMarkReadOnScroll: Boolean,
     onMarkAllRead: (range: MarkRead) -> Unit,
@@ -63,12 +58,6 @@ fun SearchView(
     val focusRequester = remember { FocusRequester() }
     val query = search.query.orEmpty()
 
-    ScrollToSelectedArticleEffect(
-        selectedArticleKey = selectedArticleID,
-        articles = results,
-        listState = listState,
-    )
-
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -76,10 +65,10 @@ fun SearchView(
             .pointerInput(Unit) { detectTapGestures { } }
     ) {
         Scaffold(
-            contentWindowInsets = ScaffoldDefaults.contentWindowInsets.listPaneInsets(),
+            contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
             topBar = {
                 TopAppBar(
-                    windowInsets = TopAppBarDefaults.windowInsets.listPaneInsets(),
+                    windowInsets = TopAppBarDefaults.windowInsets,
                     navigationIcon = {
                         IconButton(onClick = search.clear) {
                             Icon(
@@ -135,7 +124,6 @@ fun SearchView(
                 } else {
                     ArticleList(
                         articles = results,
-                        selectedArticleKey = selectedArticleID,
                         listState = listState,
                         enableMarkReadOnScroll = enableMarkReadOnScroll,
                         dimReadArticles = dimReadArticles,

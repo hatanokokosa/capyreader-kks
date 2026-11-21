@@ -3,7 +3,6 @@ package com.capyreader.app.ui.settings.panels
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Article
 import androidx.compose.material.icons.automirrored.rounded.ViewList
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Build
@@ -26,11 +25,6 @@ sealed class SettingsPanel(@StringRes val title: Int) {
     data object ArticleList : SettingsPanel(title = R.string.settings_article_list_title),
         Parcelable {
         override fun icon() = Icons.AutoMirrored.Rounded.ViewList
-    }
-
-    @Parcelize
-    data object Reader : SettingsPanel(title = R.string.settings_reader_title), Parcelable {
-        override fun icon() = Icons.AutoMirrored.Rounded.Article
     }
 
     @Parcelize
@@ -58,7 +52,6 @@ sealed class SettingsPanel(@StringRes val title: Int) {
             get() = listOf(
                 Account,
                 ArticleList,
-                Reader,
                 Display,
                 Notifications,
                 Advanced,

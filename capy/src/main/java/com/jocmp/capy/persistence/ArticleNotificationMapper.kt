@@ -10,7 +10,6 @@ internal fun articleNotificationMapper(
     feedID: String?,
     feedTitle: String?,
     feedFavicon: String?,
-    openInBrowser: Boolean,
 ) = ArticleNotification(
     id = articleID.hashCode(),
     articleID = articleID,
@@ -19,5 +18,4 @@ internal fun articleNotificationMapper(
     feedID = feedID!!,
     feedTitle = feedTitle.orEmpty(),
     feedFaviconURL = feedFavicon,
-    openInBrowser = openInBrowser,
 )

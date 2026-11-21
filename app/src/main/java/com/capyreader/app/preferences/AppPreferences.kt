@@ -6,14 +6,10 @@ import com.capyreader.app.common.FeedGroup
 import com.capyreader.app.common.ImagePreview
 import com.capyreader.app.refresher.RefreshInterval
 import com.capyreader.app.ui.articles.ArticleListFontScale
-import com.capyreader.app.ui.articles.DefaultPaneExpansionIndex
 import com.capyreader.app.ui.articles.MarkReadPosition
 import com.jocmp.capy.ArticleFilter
 import com.jocmp.capy.ArticleStatus
-import com.jocmp.capy.articles.FontOption
-import com.jocmp.capy.articles.FontSize
 import com.jocmp.capy.articles.SortOrder
-import com.jocmp.capy.articles.TextAlignment
 import com.capyreader.app.preferences.AndroidPreferenceStore
 import com.jocmp.capy.preferences.Preference
 import com.jocmp.capy.preferences.PreferenceStore
@@ -25,7 +21,8 @@ class AppPreferences(context: Context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     )
 
-    val readerOptions = ReaderOptions(preferenceStore)
+    val eInkScrollbar: Preference<Boolean>
+        get() = preferenceStore.getBoolean("article_enable_e_ink_scrollbar", false)
 
     val articleListOptions = ArticleListOptions(preferenceStore)
 
@@ -70,9 +67,6 @@ class AppPreferences(context: Context) {
     val openLinksInternally: Preference<Boolean>
         get() = preferenceStore.getBoolean("open_links_internally", true)
 
-    val enableStickyFullContent: Preference<Boolean>
-        get() = preferenceStore.getBoolean("enable_sticky_full_content", false)
-
     val refreshOnWiFiOnly: Preference<Boolean>
         get() = preferenceStore.getBoolean("refresh_on_wifi_only", false)
 
@@ -81,9 +75,6 @@ class AppPreferences(context: Context) {
 
     val eInkDefaultsApplied: Preference<Boolean>
         get() = preferenceStore.getBoolean("e_ink_defaults_applied", false)
-
-    val paneExpansionAnchor: Preference<Int>
-        get() = preferenceStore.getInt("pane_expansion_anchor", DefaultPaneExpansionIndex)
 
     fun pinFeedGroup(type: FeedGroup): Preference<Boolean> {
         return preferenceStore.getBoolean("feed_group_${type.toString().lowercase()}", true)
@@ -94,65 +85,6 @@ class AppPreferences(context: Context) {
 
     fun clearAll() {
         preferenceStore.clearAll()
-    }
-
-    class ReaderOptions(private val preferenceStore: PreferenceStore) {
-        val pinToolbars: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_pin_top_bar", false)
-
-        val fontSize: Preference<Int>
-            get() = preferenceStore.getInt("article_font_size", FontSize.DEFAULT)
-
-        val fontFamily: Preference<FontOption>
-            get() = preferenceStore.getEnum("article_font_family", FontOption.default)
-
-        val topSwipeGesture: Preference<ArticleVerticalSwipe>
-            get() = preferenceStore.getEnum(
-                "article_top_swipe_gesture",
-                ArticleVerticalSwipe.topSwipeDefault
-            )
-
-        val bottomSwipeGesture: Preference<ArticleVerticalSwipe>
-            get() = preferenceStore.getEnum(
-                "article_bottom_swipe_gesture",
-                ArticleVerticalSwipe.bottomSwipeDefault
-            )
-
-        val imageVisibility: Preference<ReaderImageVisibility>
-            get() = preferenceStore.getEnum(
-                "article_image_visibility",
-                ReaderImageVisibility.ALWAYS_SHOW
-            )
-
-        val enablePagingTapGesture: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_enable_paging_tap_gesture", false)
-
-        val showTapZoneHint: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_show_tap_zone_hint", true)
-
-        val enableEInkScrollbar: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_enable_e_ink_scrollbar", false)
-
-        val enablePageTurnKeys: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_enable_page_turn_keys", false)
-
-        val keepScreenOn: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_keep_screen_on", false)
-
-        val renderMath: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_render_math", false)
-
-        val enableHorizontaPagination: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_enable_horizontal_pagination", false)
-
-        val titleTextAlignment: Preference<TextAlignment>
-            get() = preferenceStore.getEnum("article_title_text_alignment", TextAlignment.default)
-
-        val titleFontSize: Preference<Int>
-            get() = preferenceStore.getInt("article_title_font_size", FontSize.TITLE_DEFAULT)
-
-        val titleFollowsBodyFont: Preference<Boolean>
-            get() = preferenceStore.getBoolean("article_title_follows_body_font", false)
     }
 
     class ArticleListOptions(private val preferenceStore: PreferenceStore) {

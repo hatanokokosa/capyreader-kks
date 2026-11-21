@@ -43,7 +43,7 @@ class RouteBackStackRestorationTest {
                 Text("size:${backStack.size}", modifier = Modifier.testTag("size"))
                 Button(
                     modifier = Modifier.testTag("push"),
-                    onClick = { backStack.add(Route.ArticleDetail("article-1")) },
+                    onClick = { backStack.add(Route.Settings) },
                 ) {
                     Text("Push")
                 }

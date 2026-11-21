@@ -21,6 +21,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
+import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -55,8 +56,6 @@ class ArticleScreenViewModelTest {
     private lateinit var account: Account
     private lateinit var appPreferences: AppPreferences
     private lateinit var notificationHelper: NotificationHelper
-    private val articleCutoff = ArticleSessionCutoff()
-
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
@@ -300,10 +299,10 @@ class ArticleScreenViewModelTest {
         val viewModel = buildViewModel()
         advanceUntilIdle()
         val listBefore = viewModel.articleList.value
-        val cutoffBefore = articleCutoff.value
+        val sinceBefore = viewModel.listSessionSince
 
         viewModel.markAllRead(filter = unread)
-        waitFor { articleCutoff.value != cutoffBefore }
+        waitFor { viewModel.listSessionSince != sinceBefore }
         advanceUntilIdle()
 
         assertNotSame(listBefore, viewModel.articleList.value)
@@ -318,14 +317,14 @@ class ArticleScreenViewModelTest {
         val listBefore = viewModel.articleList.value
 
         val lastReadAt = slot<ZonedDateTime>()
+        val before = OffsetDateTime.now().minusSeconds(1)
 
         viewModel.markAllRead(filter = unread, range = MarkRead.After("article"))
         coVerify(timeout = 5_000) { account.markAllRead(any(), capture(lastReadAt), any()) }
         advanceUntilIdle()
 
         assertSame(listBefore, viewModel.articleList.value)
-        val cutoff = articleCutoff.value!!.toEpochSecond()
-        assertTrue(lastReadAt.captured.toEpochSecond() >= cutoff - 1)
+        assertTrue(lastReadAt.captured.toEpochSecond() >= before.toEpochSecond())
     }
 
     @Test
@@ -383,7 +382,6 @@ class ArticleScreenViewModelTest {
             ioDispatcher = testDispatcher,
             computeDispatcher = testDispatcher,
             syncFlushInterval = syncFlushInterval,
-            articleCutoff = articleCutoff,
         )
     }
 }

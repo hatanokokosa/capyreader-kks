@@ -25,7 +25,6 @@ fun FeedActionMenuItems(
     onRemoveRequest: () -> Unit,
     onEdit: () -> Unit,
     onReloadIcon: () -> Unit,
-    onToggleOpenInBrowser: () -> Unit,
     onToggleUnreadBadge: () -> Unit,
     onMarkAllRead: () -> Unit,
     showMarkAllRead: Boolean = true,
@@ -76,22 +75,8 @@ fun FeedActionMenuItems(
             }
         )
     }
-    HorizontalDivider()
-    val trailingIcon = @Composable {
-        if (feed.openArticlesInBrowser) {
-            Icon(Icons.Rounded.CheckBox, contentDescription = null)
-        } else {
-            Icon(Icons.Rounded.CheckBoxOutlineBlank, contentDescription = null)
-        }
-    }
-    DropdownMenuItem(
-        trailingIcon = trailingIcon,
-        text = {
-            Text(stringResource(R.string.open_articles_in_browser))
-        },
-        onClick = onToggleOpenInBrowser
-    )
     if (LocalBadgeStyle.current == BadgeStyle.SIMPLE) {
+        HorizontalDivider()
         val unreadBadgeIcon = @Composable {
             if (feed.showUnreadBadge) {
                 Icon(Icons.Rounded.CheckBox, contentDescription = null)
@@ -119,7 +104,6 @@ fun FeedActionMenuPreview(@PreviewParameter(FeedSample::class) feed: Feed) {
             onEdit = {},
             onReloadIcon = {},
             onRemoveRequest = {},
-            onToggleOpenInBrowser = {},
             onToggleUnreadBadge = {},
             onMarkAllRead = {},
         )

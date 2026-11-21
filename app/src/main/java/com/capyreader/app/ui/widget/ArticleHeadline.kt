@@ -103,7 +103,7 @@ private fun widgetTimeFormats(context: Context): DisplayTimeFormats {
 }
 
 private fun Context.openArticle(article: Article): Action {
-    return if (article.openInBrowser && article.url != null) {
+    return if (article.url != null) {
         return actionStartActivity(
             Intent(this, OpenArticleInBrowserActivity::class.java).apply {
                 putExtra(ARTICLE_ID_KEY, article.id)

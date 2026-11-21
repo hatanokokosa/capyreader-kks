@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
@@ -64,8 +63,6 @@ import com.capyreader.app.ui.LocalLinkOpener
 import com.capyreader.app.ui.LocalMarkAllReadButtonPosition
 import com.capyreader.app.ui.LocalTimeFormats
 import com.capyreader.app.ui.LocalUnreadCount
-import com.capyreader.app.ui.articles.audio.AudioMiniPlayer
-import com.capyreader.app.ui.articles.audio.AudioPlayerController
 import com.capyreader.app.ui.articles.feeds.AngleRefreshState
 import com.capyreader.app.ui.articles.feeds.FeedActions
 import com.capyreader.app.ui.articles.feeds.FeedList
@@ -114,12 +111,9 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class, FlowPreview::class)
 @Composable
 fun ArticleScreen(
-    onSelectArticle: (articleID: String, searchQuery: String?) -> Unit,
     onNavigateToSettings: () -> Unit,
-    onCloseArticle: () -> Unit = {},
     viewModel: ArticleScreenViewModel = koinViewModel(),
     appPreferences: AppPreferences = koinInject(),
-    selectedArticleID: String? = null,
 ) {
     val currentFeed by viewModel.currentFeed.collectAsStateWithLifecycle(initialValue = null)
     val feeds by viewModel.topLevelFeeds.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -219,9 +213,6 @@ fun ArticleScreen(
         val isPullToRefreshing = viewModel.isPullToRefreshing
         val addFeedSuccessMessage = stringResource(R.string.add_feed_success)
         val scrollBehavior = pinnedScrollBehavior()
-        val audioController: AudioPlayerController = koinInject()
-        val audioEnclosure by audioController.currentAudio.collectAsState()
-        val audioPlayer by audioController.player.collectAsState()
         val focusManager = LocalFocusManager.current
         val openUpdatePasswordDialog = {
             viewModel.dismissUnauthorizedMessage()
@@ -239,12 +230,6 @@ fun ArticleScreen(
                 listState.scrollToItem(0)
             }
         }
-
-        ScrollToSelectedArticleEffect(
-            selectedArticleKey = selectedArticleID,
-            articles = articles,
-            listState = listState,
-        )
 
         val newArticles = rememberNewArticlesIndicator(
             articles = presentedArticles,
@@ -387,7 +372,6 @@ fun ArticleScreen(
         }
 
         fun openDrawerSelection(action: suspend () -> Unit) {
-            onCloseArticle()
             openNextList(action)
         }
 
@@ -402,15 +386,11 @@ fun ArticleScreen(
             // reaches the list and must close the drawer itself.
             closeDrawer()
 
-            // Feeds flagged "open in browser" skip the in-app reader, matching the widget behavior.
-            val url = article.url
-            if (article.openInBrowser && url != null) {
-                viewModel.markReadAsync(article.id)
-                linkOpener.open(url.toString().toUri())
-            } else {
-                val searchQuery = search.query.takeIf { search.isActive && !it.isNullOrBlank() }
-                onSelectArticle(article.id, searchQuery)
-            }
+            // There is no in-app reader anymore: every article opens in the browser. Articles
+            // without a link have nowhere to go.
+            val url = article.url ?: return
+            viewModel.markReadAsync(article.id)
+            linkOpener.open(url.toString().toUri())
         }
 
         val selectFilter = {
@@ -521,7 +501,7 @@ fun ArticleScreen(
                     LocalMarkAllRead provides { markAllRead(MarkRead.All) },
                 ) {
                     Scaffold(
-                        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.listPaneInsets(),
+                        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
                         modifier = Modifier
                             .nestedScroll(scrollBehavior.nestedScrollConnection)
                             .nestedScroll(object : NestedScrollConnection {
@@ -559,23 +539,6 @@ fun ArticleScreen(
                         },
                         snackbarHost = {
                             SnackbarHost(hostState = snackbarHostState)
-                        },
-                        floatingActionButtonPosition = FabPosition.Center,
-                        floatingActionButton = {
-                            val audio = audioEnclosure
-                            val player = audioPlayer
-                            if (audio != null && player != null) {
-                                AudioMiniPlayer(
-                                    player = player,
-                                    onClick = {
-                                        closeDrawer()
-                                        onSelectArticle(audio.articleID, null)
-                                    },
-                                    onDismiss = {
-                                        audioController.dismiss()
-                                    },
-                                )
-                            }
                         },
                         bottomBar = {
                             ArticleStatusBottomBar(
@@ -619,7 +582,6 @@ fun ArticleScreen(
                                         ArticleList(
                                             articles = articles,
                                             contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
-                                            selectedArticleKey = selectedArticleID,
                                             listState = listState,
                                             enableMarkReadOnScroll = viewModel.markReadOnScrollEnabled,
                                             dimReadArticles = presentedArticles.filter.status != ArticleStatus.STARRED,
@@ -674,7 +636,6 @@ fun ArticleScreen(
                     search = search,
                     results = searchResults,
                     listState = searchListState,
-                    selectedArticleID = selectedArticleID,
                     dimReadArticles = filter.status != ArticleStatus.STARRED,
                     enableMarkReadOnScroll = viewModel.markReadOnScrollEnabled,
                     onMarkAllRead = onMarkAllRead,
@@ -739,7 +700,7 @@ fun ArticleScreen(
             filter,
             onRequestFilter = selectFilter,
             onRequestFolder = selectFolder,
-            enabled = selectedArticleID == null && !search.isActive,
+            enabled = !search.isActive,
             isDrawerOpen = drawerState.isOpen,
             toggleDrawer = {
                 toggleDrawer()
@@ -783,9 +744,6 @@ fun rememberFolderActions(viewModel: ArticleScreenViewModel): FolderActions {
 fun rememberFeedActions(viewModel: ArticleScreenViewModel): FeedActions {
     return remember {
         FeedActions(
-            updateOpenInBrowser = { feedID, openInBrowser ->
-                viewModel.updateOpenInBrowser(feedID, openInBrowser)
-            },
             removeFeed = { feedID, completion ->
                 viewModel.removeFeed(feedID, completion)
             },

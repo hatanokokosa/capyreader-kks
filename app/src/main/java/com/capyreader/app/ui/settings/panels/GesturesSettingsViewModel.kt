@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.capyreader.app.preferences.AppPreferences
 import com.capyreader.app.preferences.ArticleListVerticalSwipe
-import com.capyreader.app.preferences.ArticleVerticalSwipe
 import com.capyreader.app.preferences.BackAction
 import com.capyreader.app.preferences.RowSwipeOption
 
@@ -14,9 +13,6 @@ class GesturesSettingsViewModel(
     private val appPreferences: AppPreferences
 ) : ViewModel() {
     var backAction by mutableStateOf(listOptions.backAction.get())
-        private set
-
-    var readerTopSwipe by mutableStateOf(readerOptions.topSwipeGesture.get())
         private set
 
     var rowSwipeStart by mutableStateOf(listOptions.swipeStart.get())
@@ -28,25 +24,10 @@ class GesturesSettingsViewModel(
     var listSwipeBottom by mutableStateOf(listOptions.swipeBottom.get())
         private set
 
-    var readerBottomSwipe by mutableStateOf(readerOptions.bottomSwipeGesture.get())
-        private set
-
-    var enablePagingTapGesture by mutableStateOf(readerOptions.enablePagingTapGesture.get())
-        private set
-
-    var enablePageTurnKeys by mutableStateOf(readerOptions.enablePageTurnKeys.get())
-        private set
-
-    var keepScreenOn by mutableStateOf(readerOptions.keepScreenOn.get())
-        private set
-
-    var enableEInkScrollbar by mutableStateOf(readerOptions.enableEInkScrollbar.get())
+    var enableEInkScrollbar by mutableStateOf(appPreferences.eInkScrollbar.get())
         private set
 
     var reduceMotion by mutableStateOf(appPreferences.reduceMotion.get())
-        private set
-
-    var enableHorizontalPagination by mutableStateOf(readerOptions.enableHorizontaPagination.get())
         private set
 
     fun updateBackAction(action: BackAction) {
@@ -55,28 +36,10 @@ class GesturesSettingsViewModel(
         listOptions.backAction.set(action)
     }
 
-    fun updateReaderTopSwipe(swipe: ArticleVerticalSwipe) {
-        readerTopSwipe = swipe
-
-        readerOptions.topSwipeGesture.set(swipe)
-    }
-
-    fun updateReaderBottomSwipe(swipe: ArticleVerticalSwipe) {
-        readerBottomSwipe = swipe
-
-        readerOptions.bottomSwipeGesture.set(swipe)
-    }
-
     fun updateRowSwipeStart(swipe: RowSwipeOption) {
         rowSwipeStart = swipe
 
         listOptions.swipeStart.set(swipe)
-    }
-
-    fun updateHorizontalPagination(scroll: Boolean) {
-        enableHorizontalPagination = scroll
-
-        readerOptions.enableHorizontaPagination.set(scroll)
     }
 
     fun updateRowSwipeEnd(swipe: RowSwipeOption) {
@@ -91,32 +54,10 @@ class GesturesSettingsViewModel(
         listOptions.swipeBottom.set(swipe)
     }
 
-    fun updatePagingTapGesture(enabled: Boolean) {
-        enablePagingTapGesture = enabled
-
-        readerOptions.enablePagingTapGesture.set(enabled)
-
-        if (enabled) {
-            readerOptions.showTapZoneHint.set(true)
-        }
-    }
-
-    fun updatePageTurnKeys(enabled: Boolean) {
-        enablePageTurnKeys = enabled
-
-        readerOptions.enablePageTurnKeys.set(enabled)
-    }
-
-    fun updateKeepScreenOn(enabled: Boolean) {
-        keepScreenOn = enabled
-
-        readerOptions.keepScreenOn.set(enabled)
-    }
-
     fun updateEInkScrollbar(enabled: Boolean) {
         enableEInkScrollbar = enabled
 
-        readerOptions.enableEInkScrollbar.set(enabled)
+        appPreferences.eInkScrollbar.set(enabled)
     }
 
     fun updateReduceMotion(enabled: Boolean) {
@@ -124,9 +65,6 @@ class GesturesSettingsViewModel(
 
         appPreferences.reduceMotion.set(enabled)
     }
-
-    private val readerOptions: AppPreferences.ReaderOptions
-        get() = appPreferences.readerOptions
 
     private val listOptions: AppPreferences.ArticleListOptions
         get() = appPreferences.articleListOptions

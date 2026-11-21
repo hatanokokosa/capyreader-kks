@@ -34,8 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.capyreader.app.R
-import com.capyreader.app.ui.articles.media.ListItemDisabledLabelTextOpacity
 import com.capyreader.app.ui.components.DialogCard
+import com.capyreader.app.ui.components.ListItemDisabledLabelTextOpacity
 import com.capyreader.app.ui.theme.CapyTheme
 
 @Composable

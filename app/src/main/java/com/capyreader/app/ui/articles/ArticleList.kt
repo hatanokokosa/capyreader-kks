@@ -36,7 +36,6 @@ import androidx.paging.compose.itemKey
 import com.capyreader.app.R
 import com.capyreader.app.common.asState
 import com.capyreader.app.preferences.AppPreferences
-import com.capyreader.app.ui.isSinglePane
 import com.jocmp.capy.Article
 import com.jocmp.capy.MarkRead
 import kotlinx.coroutines.delay
@@ -47,7 +46,6 @@ import java.time.LocalDateTime
 fun ArticleList(
     articles: LazyPagingItems<Article>,
     onSelect: (article: Article) -> Unit,
-    selectedArticleKey: String?,
     listState: LazyListState,
     onMarkAllRead: (range: MarkRead) -> Unit = {},
     enableMarkReadOnScroll: Boolean = false,
@@ -85,7 +83,6 @@ fun ArticleList(
                                 ArticleRow(
                                     article = item,
                                     index = index,
-                                    selected = selectedArticleKey == item.id,
                                     onSelect = {
                                         onSelect(item)
                                     },
@@ -121,28 +118,6 @@ fun ArticleList(
                 .padding(top = 8.dp),
         ) {
             NewArticlesButton(onClick = scrollToTop)
-        }
-    }
-}
-
-/**
- * In a two-pane layout the list stays beside the reader, so keep the selected article in view
- * (e.g. when stepping next/previous) by scrolling to it when it isn't already visible.
- */
-@Composable
-fun ScrollToSelectedArticleEffect(
-    selectedArticleKey: String?,
-    articles: LazyPagingItems<Article>,
-    listState: LazyListState,
-) {
-    val isSinglePane = isSinglePane()
-
-    LaunchedEffect(selectedArticleKey, isSinglePane, articles.itemCount) {
-        if (isSinglePane) return@LaunchedEffect
-        val id = selectedArticleKey ?: return@LaunchedEffect
-        val index = articles.itemSnapshotList.indexOfFirst { it?.id == id }
-        if (index > -1 && listState.layoutInfo.visibleItemsInfo.none { it.index == index }) {
-            listState.animateScrollToItem(index)
         }
     }
 }

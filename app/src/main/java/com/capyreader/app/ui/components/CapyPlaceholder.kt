@@ -1,4 +1,4 @@
-package com.capyreader.app.ui.articles.detail
+package com.capyreader.app.ui.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme

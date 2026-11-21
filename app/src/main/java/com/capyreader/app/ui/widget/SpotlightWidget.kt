@@ -77,7 +77,6 @@ class SpotlightWidget : GlanceAppWidget() {
                         title = "\"Hello, World\"",
                         imageURL = null,
                         articleURL = "https://www.nasa.gov/image-article/hello-world/",
-                        openInBrowser = false,
                     ),
                     imageBitmap = previewBitmap,
                 )
@@ -199,7 +198,6 @@ private fun Article.toSpotlightEntry() = SpotlightEntry(
     title = title.ifBlank { summary },
     imageURL = imageURL,
     articleURL = url?.toString(),
-    openInBrowser = openInBrowser,
 )
 
 private val SMALL_SIZE = DpSize(110.dp, 110.dp)

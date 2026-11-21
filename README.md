@@ -1,3 +1,5 @@
+这是一个由 LLM 维护的自用 Capy Reader fork，修改了一些自己觉得比较麻烦的功能，该仓库不接受贡献
+
 # Capy Reader
 
 <img src="./site/capy.png" width="100px">

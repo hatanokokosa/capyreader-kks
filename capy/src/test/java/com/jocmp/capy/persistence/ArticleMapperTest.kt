@@ -22,8 +22,6 @@ class ArticleMapperTest {
             enclosureType = null,
             feedTitle = "",
             faviconURL = null,
-            enableStickyContent = false,
-            openInBrowser = false,
             feedURL = null,
             siteURL = null,
             readLater = false,

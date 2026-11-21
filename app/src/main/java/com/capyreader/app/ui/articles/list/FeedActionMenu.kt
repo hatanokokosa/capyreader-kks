@@ -34,13 +34,6 @@ fun FeedActionMenu(
     val (isEditDialogOpen, setEditDialogOpen) = rememberSaveable { mutableStateOf(false) }
     val (isRemoveDialogOpen, setRemoveDialogOpen) = remember { mutableStateOf(false) }
 
-    fun onToggleOpenInBrowser() {
-        onDismissMenuRequest()
-        scope.launchUI {
-            actions.updateOpenInBrowser(feed.id, !feed.openArticlesInBrowser)
-        }
-    }
-
     fun onToggleUnreadBadge() {
         onDismissMenuRequest()
         scope.launchUI {
@@ -65,9 +58,6 @@ fun FeedActionMenu(
             onReloadIcon = { onReloadIcon() },
             onRemoveRequest = { setRemoveDialogOpen(true) },
             onMenuClose = onDismissMenuRequest,
-            onToggleOpenInBrowser = {
-                onToggleOpenInBrowser()
-            },
             onToggleUnreadBadge = {
                 onToggleUnreadBadge()
             },

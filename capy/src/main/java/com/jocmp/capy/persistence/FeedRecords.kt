@@ -123,13 +123,6 @@ internal class FeedRecords(private val database: Database) {
         )
     }
 
-    suspend fun updateOpenInBrowser(feedID: String, enabled: Boolean) = withIOContext {
-        database.feedsQueries.updateOpenInBrowser(
-            enabled = enabled,
-            feedID = feedID
-        )
-    }
-
     suspend fun enableNotifications(feedID: String, enabled: Boolean) = withIOContext {
         database.feedsQueries.enableNotifications(
             enabled = enabled,
@@ -217,9 +210,7 @@ internal class FeedRecords(private val database: Database) {
         itunesImageURL = itunesImageURL,
         folderName = folderName.orEmpty(),
         count = 0,
-        enableStickyFullContent = enableStickyFullContent,
         enableNotifications = enableNotifications,
-        openArticlesInBrowser = openArticlesInBrowser,
         folderExpanded = expanded ?: false,
         priority = FeedPriority.parse(priority),
         showUnreadBadge = showUnreadBadge,

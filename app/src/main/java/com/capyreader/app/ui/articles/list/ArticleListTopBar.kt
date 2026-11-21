@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.capyreader.app.R
 import com.capyreader.app.ui.articles.FilterActionMenu
 import com.capyreader.app.ui.articles.FilterAppBarTitle
-import com.capyreader.app.ui.articles.listPaneInsets
 import com.capyreader.app.ui.components.ArticleSearch
 import com.jocmp.capy.ArticleFilter
 import com.jocmp.capy.Feed
@@ -42,7 +41,7 @@ fun ArticleListTopBar(
     // to launch it; the active-search field/back-arrow used to live here.
     TopAppBar(
         scrollBehavior = scrollBehavior,
-        windowInsets = TopAppBarDefaults.windowInsets.listPaneInsets(),
+        windowInsets = TopAppBarDefaults.windowInsets,
         title = {
             FilterAppBarTitle(
                 filter = filter,

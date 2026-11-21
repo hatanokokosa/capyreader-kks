@@ -52,6 +52,7 @@ class AccountTest {
         val oldArticle = ArticleFixture(database = account.database).create(
             publishedAt = nowUTC().minusMonths(4).toEpochSecond()
         )
+        account.preferences.autoDelete.set(AutoDelete.EVERY_THREE_MONTHS)
 
         assertEquals(account.refresh(), Result.success(Unit))
 
@@ -59,11 +60,10 @@ class AccountTest {
     }
 
     @Test
-    fun refresh_autoDeleteDisabled() = runTest {
+    fun refresh_keepsOldArticlesByDefault() = runTest {
         val oldArticle = ArticleFixture(database = account.database).create(
             publishedAt = nowUTC().minusMonths(4).toEpochSecond()
         )
-        account.preferences.autoDelete.set(AutoDelete.DISABLED)
 
         assertEquals(account.refresh(), Result.success(Unit))
         assertNotNull(account.database.reload(oldArticle))

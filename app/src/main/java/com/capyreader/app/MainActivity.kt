@@ -2,9 +2,7 @@ package com.capyreader.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,8 +15,6 @@ import com.capyreader.app.ui.App
 import com.capyreader.app.ui.AppMotionDurationScale
 import com.capyreader.app.ui.DeepLink
 import com.capyreader.app.ui.Route
-import com.capyreader.app.ui.articles.detail.LocalPageTurnKeys
-import com.capyreader.app.ui.articles.detail.PageTurnKeys
 import com.jocmp.capy.ArticleStatus
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -29,8 +25,6 @@ class MainActivity : BaseActivity() {
     private var deepLink by mutableStateOf<List<NavKey>?>(null)
 
     private val motionDurationScale = AppMotionDurationScale()
-
-    private val pageTurnKeys = PageTurnKeys()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,32 +39,18 @@ class MainActivity : BaseActivity() {
         )
 
         setContent(parent = recomposer) {
-            CompositionLocalProvider(LocalPageTurnKeys provides pageTurnKeys) {
-                App(
-                    startBackStack = startBackStack,
-                    appPreferences = appPreferences,
-                    deepLink = deepLink,
-                    onDeepLinkConsumed = { deepLink = null },
-                )
-            }
+            App(
+                startBackStack = startBackStack,
+                appPreferences = appPreferences,
+                deepLink = deepLink,
+                onDeepLinkConsumed = { deepLink = null },
+            )
         }
     }
 
     override fun onResume() {
         super.onResume()
         motionDurationScale.refreshSystemScale(contentResolver)
-    }
-
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        return pageTurnKeys.interceptKey(event) || super.dispatchKeyEvent(event)
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return pageTurnKeys.unhandledKey(event) || super.onKeyDown(keyCode, event)
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        return pageTurnKeys.unhandledKey(event) || super.onKeyUp(keyCode, event)
     }
 
     private fun observeReduceMotion() {
@@ -94,8 +74,8 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     * Keep the persisted filter in sync with the deep link's list, so the list and the reader's
-     * neighbor query (both read [AppPreferences.filter]) agree on which articles are siblings.
+     * Keep the persisted filter in sync with the deep link's list, so the list reads the same
+     * filter the link targeted.
      */
     private fun applyListFilter(backStack: List<NavKey>) {
         (backStack.firstOrNull() as? Route.ArticleList)?.let {

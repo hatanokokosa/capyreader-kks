@@ -8,5 +8,4 @@ data class ArticleNotification(
     val feedID: String,
     val feedTitle: String,
     val feedFaviconURL: String?,
-    val openInBrowser: Boolean,
 )

@@ -1,11 +1,5 @@
 package com.capyreader.app.ui.articles
 
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -97,7 +91,6 @@ data class ArticleRowOptions(
 fun ArticleRow(
     article: Article,
     index: Int,
-    selected: Boolean,
     onSelect: (articleID: String) -> Unit,
     onMarkAllRead: (range: MarkRead) -> Unit = {},
     currentTime: LocalDateTime,
@@ -108,7 +101,6 @@ fun ArticleRow(
     val dim = article.read && options.dim
     val deEmphasizeFontWeight = dim && isMonochrome
     val colors = listItemColors(
-        selected = selected,
         read = dim
     )
     val feedNameColor = findFeedNameColor(
@@ -132,7 +124,6 @@ fun ArticleRow(
             onClick = { onSelect(article.id) },
             onLongClick = openArticleMenu,
             article = article,
-            outlined = selected && isMonochrome,
         ) {
             ArticleListItem(
                 headlineContent = {
@@ -363,17 +354,12 @@ fun PlaceholderArticleRow(imagePreview: ImagePreview = ImagePreview.NONE) {
 
 @Composable
 @Stable
-private fun listItemColors(
-    selected: Boolean,
-    read: Boolean,
-): ListItemColors {
+private fun listItemColors(read: Boolean): ListItemColors {
     val defaults = ListItemDefaults.colors()
     val isMonochrome = LocalAppTheme.current.value == AppTheme.MONOCHROME
     val dimColors = read && !isMonochrome
-    val showSelectedFill = selected && !isMonochrome
 
     return ListItemDefaults.colors(
-        containerColor = if (showSelectedFill) colorScheme.surfaceVariant else defaults.containerColor,
         headlineColor = if (dimColors) defaults.disabledContentColor else defaults.contentColor,
         supportingColor = if (dimColors) defaults.disabledContentColor else defaults.supportingContentColor
     )
@@ -425,11 +411,8 @@ private fun ArticleBox(
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     article: Article,
-    outlined: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val outlineColor = MaterialTheme.colorScheme.onSurface
-
     ArticleRowSwipeBox(article) {
         Box(
             Modifier
@@ -437,38 +420,12 @@ private fun ArticleBox(
                     onClick = onClick,
                     onLongClick = onLongClick,
                     onLongClickLabel = stringResource(R.string.article_actions_open_menu)
-                )
-                .drawWithContent {
-                    drawContent()
-
-                    if (outlined) {
-                        drawSelectedOutline(outlineColor)
-                    }
-                },
+                ),
         ) {
             content()
         }
     }
 }
-
-private fun DrawScope.drawSelectedOutline(color: Color) {
-    val stroke = SELECTED_OUTLINE_WIDTH.toPx()
-    val horizontal = SELECTED_OUTLINE_HORIZONTAL_INSET.toPx() + stroke / 2
-    val vertical = SELECTED_OUTLINE_VERTICAL_INSET.toPx() + stroke / 2
-
-    drawRoundRect(
-        color = color,
-        topLeft = Offset(horizontal, vertical),
-        size = Size(size.width - horizontal * 2, size.height - vertical * 2),
-        cornerRadius = CornerRadius(SELECTED_OUTLINE_CORNER.toPx()),
-        style = Stroke(width = stroke),
-    )
-}
-
-private val SELECTED_OUTLINE_HORIZONTAL_INSET = 4.dp
-private val SELECTED_OUTLINE_VERTICAL_INSET = 2.dp
-private val SELECTED_OUTLINE_WIDTH = 2.dp
-private val SELECTED_OUTLINE_CORNER = 12.dp
 
 private val SMALL_IMAGE_SIZE = 56.dp
 private val MEDIUM_IMAGE_SIZE = 84.dp
@@ -501,14 +458,12 @@ fun ArticleRowPreview_Selected_DarkMode() {
                 ArticleRow(
                     article = article,
                     index = 0,
-                    selected = true,
                     onSelect = {},
                     currentTime = LocalDateTime.now(),
                 )
                 ArticleRow(
                     article = article.copy(read = false),
                     index = 0,
-                    selected = false,
                     onSelect = {},
                     currentTime = LocalDateTime.now(),
                 )
@@ -525,7 +480,6 @@ fun ArticleRowPreview_Selected(@PreviewParameter(ArticleSample::class) article: 
             ArticleRow(
                 article = article,
                 index = 0,
-                selected = true,
                 onSelect = {},
                 currentTime = LocalDateTime.now(),
             )
@@ -541,7 +495,6 @@ fun ArticleRowPreview_Large(@PreviewParameter(ArticleSample::class) article: Art
             ArticleRow(
                 article = article.copy(imageURL = "http://example.com"),
                 index = 0,
-                selected = true,
                 onSelect = {},
                 currentTime = LocalDateTime.now(),
                 options = ArticleRowOptions(
@@ -565,7 +518,6 @@ fun ArticleRowPreview_Medium(@PreviewParameter(ArticleSample::class) article: Ar
                     enclosureType = EnclosureType.AUDIO
                 ),
                 index = 0,
-                selected = true,
                 onSelect = {},
                 currentTime = LocalDateTime.now(),
                 options = ArticleRowOptions(
@@ -584,7 +536,6 @@ fun ArticleRowPreview_LargeText(@PreviewParameter(ArticleSample::class) article:
             ArticleRow(
                 article = article.copy(imageURL = "http://example.com"),
                 index = 0,
-                selected = true,
                 onSelect = {},
                 currentTime = LocalDateTime.now(),
                 options = ArticleRowOptions(
@@ -619,21 +570,18 @@ fun ArticleRowPreview_Unread() {
         ArticleRow(
             article = article,
             index = 0,
-            selected = false,
             onSelect = {},
             currentTime = LocalDateTime.now(),
         )
         ArticleRow(
             article = article.copy(imageURL = null),
             index = 0,
-            selected = false,
             onSelect = {},
             currentTime = LocalDateTime.now(),
         )
         ArticleRow(
             article = article,
             index = 0,
-            selected = false,
             onSelect = {},
             currentTime = LocalDateTime.now(),
             options = ArticleRowOptions(showFeedName = false)
@@ -641,7 +589,6 @@ fun ArticleRowPreview_Unread() {
         ArticleRow(
             article = article,
             index = 0,
-            selected = false,
             onSelect = {},
             currentTime = LocalDateTime.now(),
             options = ArticleRowOptions(showFeedName = false, imagePreview = ImagePreview.NONE)
@@ -649,7 +596,6 @@ fun ArticleRowPreview_Unread() {
         ArticleRow(
             article = article,
             index = 0,
-            selected = false,
             onSelect = {},
             currentTime = LocalDateTime.now(),
             options = ArticleRowOptions(
@@ -687,7 +633,6 @@ fun ArticleRowPreview_Rtl() {
     ArticleRow(
         article = article,
         index = 0,
-        selected = false,
         onSelect = {},
         currentTime = LocalDateTime.now(),
     )
@@ -732,14 +677,12 @@ fun ArticleRowPreview_AccentBar() {
                 ArticleRow(
                     article = article,
                     index = 0,
-                    selected = false,
                     onSelect = {},
                     currentTime = LocalDateTime.now(),
                 )
                 ArticleRow(
                     article = article.copy(read = true),
                     index = 1,
-                    selected = false,
                     onSelect = {},
                     currentTime = LocalDateTime.now(),
                 )

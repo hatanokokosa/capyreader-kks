@@ -1,7 +1,6 @@
 package com.capyreader.app.ui
 
 import androidx.navigation3.runtime.NavKey
-import com.capyreader.app.common.Media
 import com.jocmp.capy.ArticleFilter
 import com.jocmp.capy.accounts.Source
 import kotlinx.serialization.Serializable
@@ -20,27 +19,8 @@ sealed class Route : NavKey {
      * The article list. [filter] isn't read by the list entry itself — it's a one-way seed that
      * [com.capyreader.app.MainActivity.applyListFilter] copies into
      * [com.capyreader.app.preferences.AppPreferences.filter] at launch/deep-link time, which is
-     * the value the list and reader actually read reactively.
+     * the value the list actually reads reactively.
      */
     @Serializable
     data class ArticleList(val filter: ArticleFilter) : Route()
-
-    /**
-     * A single article opened in the reader. Resolved from [articleID] by the detail ViewModel.
-     * [searchQuery] is set when the article was opened from search results, so the reader's
-     * next/previous neighbors walk the search results rather than the underlying list.
-     */
-    @Serializable
-    data class ArticleDetail(val articleID: String, val searchQuery: String? = null) : Route()
-
-    /**
-     * Full-screen image viewer, rendered as an overlay above the list/detail panes (see
-     * [com.capyreader.app.ui.articles.media.MediaSceneStrategy]). [Media] is already
-     * `@Serializable`, so it persists with the back stack across process death.
-     */
-    @Serializable
-    data class MediaViewer(val media: Media) : Route()
-
-    @Serializable
-    data class VideoViewer(val uri: String) : Route()
 }

@@ -13,7 +13,7 @@ fun ArticleListScrollbar(
     appPreferences: AppPreferences = koinInject(),
     content: @Composable () -> Unit,
 ) {
-    val wide by appPreferences.readerOptions.enableEInkScrollbar.collectChangesWithCurrent()
+    val wide by appPreferences.eInkScrollbar.collectChangesWithCurrent()
 
     LazyScrollbar(state = listState, wide = wide) {
         content()

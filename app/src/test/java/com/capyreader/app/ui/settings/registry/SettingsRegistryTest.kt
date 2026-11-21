@@ -62,7 +62,7 @@ class SettingsRegistryTest {
     fun `drops sections with no available settings`() {
         val titles = SettingsRegistry.sections(SettingsPanel.Advanced, local).map { it.title }
 
-        assertEquals(2, titles.size)
+        assertEquals(3, titles.size)
     }
 
     @Test
@@ -77,19 +77,16 @@ class SettingsRegistryTest {
             .map { it.setting to it.path.joinToString(" > ") }
 
         assertEquals(
-            listOf(
-                Setting.LIST_SWIPE_UP to "Article List > Gestures",
-                Setting.READER_SWIPE_UP to "Reader > Gestures",
-            ),
+            listOf(Setting.LIST_SWIPE_UP to "Article List > Gestures"),
             results,
         )
     }
 
     @Test
     fun `search matches panel titles`() {
-        val result = SettingsRegistry.search("reader", local, resolve).first()
+        val result = SettingsRegistry.search("display", local, resolve).first()
 
-        assertEquals(SettingsPanel.Reader, result.panel)
+        assertEquals(SettingsPanel.Display, result.panel)
         assertEquals(null, result.setting)
         assertTrue(result.path.isEmpty())
     }

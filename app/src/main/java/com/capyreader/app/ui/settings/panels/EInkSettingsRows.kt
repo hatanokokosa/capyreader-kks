@@ -20,18 +20,6 @@ fun ReduceMotionRow(viewModel: GesturesSettingsViewModel = koinViewModel()) {
 }
 
 @Composable
-fun TapToPageRow(viewModel: GesturesSettingsViewModel = koinViewModel()) {
-    RowItem {
-        TextSwitch(
-            onCheckedChange = viewModel::updatePagingTapGesture,
-            checked = viewModel.enablePagingTapGesture,
-            title = stringResource(R.string.settings_e_ink_tap_to_page_title),
-            subtitle = stringResource(R.string.settings_e_ink_tap_to_page_subtitle)
-        )
-    }
-}
-
-@Composable
 fun EInkScrollbarRow(viewModel: GesturesSettingsViewModel = koinViewModel()) {
     RowItem {
         TextSwitch(
@@ -39,30 +27,6 @@ fun EInkScrollbarRow(viewModel: GesturesSettingsViewModel = koinViewModel()) {
             checked = viewModel.enableEInkScrollbar,
             title = stringResource(R.string.settings_e_ink_scrollbar_title),
             subtitle = stringResource(R.string.settings_e_ink_scrollbar_subtitle)
-        )
-    }
-}
-
-@Composable
-fun PageTurnKeysRow(viewModel: GesturesSettingsViewModel = koinViewModel()) {
-    RowItem {
-        TextSwitch(
-            onCheckedChange = viewModel::updatePageTurnKeys,
-            checked = viewModel.enablePageTurnKeys,
-            title = stringResource(R.string.settings_e_ink_page_turn_keys_title),
-            subtitle = stringResource(R.string.settings_e_ink_page_turn_keys_subtitle)
-        )
-    }
-}
-
-@Composable
-fun KeepScreenOnRow(viewModel: GesturesSettingsViewModel = koinViewModel()) {
-    RowItem {
-        TextSwitch(
-            onCheckedChange = viewModel::updateKeepScreenOn,
-            checked = viewModel.keepScreenOn,
-            title = stringResource(R.string.settings_e_ink_keep_screen_on_title),
-            subtitle = stringResource(R.string.settings_e_ink_keep_screen_on_subtitle)
         )
     }
 }

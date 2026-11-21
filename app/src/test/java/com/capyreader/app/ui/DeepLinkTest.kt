@@ -31,16 +31,13 @@ class DeepLinkTest {
     }
 
     @Test
-    fun `parse builds list and detail entries for an article link`() {
+    fun `parse builds the list for an article link`() {
         val uri = DeepLink.articleUri(articleID = "https://example.com/post")
 
         val result = DeepLink.parse(uri)
 
         assertEquals(
-            listOf(
-                Route.ArticleList(ArticleFilter.default()),
-                Route.ArticleDetail("https://example.com/post"),
-            ),
+            listOf(Route.ArticleList(ArticleFilter.default())),
             result,
         )
     }
@@ -60,7 +57,6 @@ class DeepLinkTest {
                         feedStatus = ArticleStatus.UNREAD,
                     )
                 ),
-                Route.ArticleDetail("article-1"),
             ),
             result,
         )

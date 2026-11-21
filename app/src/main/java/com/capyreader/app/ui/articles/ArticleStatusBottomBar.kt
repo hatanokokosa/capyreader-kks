@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.capyreader.app.ui.LocalMarkAllReadButtonPosition
 import com.capyreader.app.ui.LocalUnreadCount
-import com.capyreader.app.ui.articles.detail.ArticleBarDefaults
 import com.capyreader.app.ui.articles.list.MarkAllReadFloatingActionButton
 import com.capyreader.app.ui.theme.CapyTheme
 import com.jocmp.capy.ArticleStatus
@@ -58,15 +57,15 @@ fun ArticleStatusBottomBar(
         modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(bottom = ArticleBarDefaults.FloatingToolbarBottomGap),
+            .padding(bottom = FloatingToolbarBottomGap),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.height(ArticleBarDefaults.FloatingToolbarHeight),
+            modifier = Modifier.height(FloatingToolbarHeight),
         ) {
             HorizontalFloatingToolbar(
                 expanded = true,
-                modifier = Modifier.height(ArticleBarDefaults.FloatingToolbarHeight),
+                modifier = Modifier.height(FloatingToolbarHeight),
             ) {
                 if (showFloatingActionButton) {
                     FixedWidthStatusBar(
@@ -109,6 +108,10 @@ fun ArticleStatusBottomBar(
 }
 
 private const val FabHiddenScale = 0.2f
+
+private val FloatingToolbarHeight = 64.dp
+
+private val FloatingToolbarBottomGap = 12.dp
 
 private val ToolbarToFabGap = 8.dp
 

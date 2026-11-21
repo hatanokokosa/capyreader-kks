@@ -103,34 +103,6 @@ object SettingsRegistry {
                 ),
             )
 
-            SettingsPanel.Reader -> listOf(
-                SettingsSection(
-                    title = null,
-                    settings = listOf(Setting.READER_STYLE),
-                ),
-                SettingsSection(
-                    title = R.string.settings_section_content,
-                    settings = listOf(
-                        Setting.READER_IMAGES,
-                        Setting.STICKY_FULL_CONTENT,
-                        Setting.PIN_TOOLBARS,
-                        Setting.RENDER_MATH,
-                    ),
-                ),
-                SettingsSection(
-                    title = R.string.settings_section_browser,
-                    settings = listOf(Setting.IN_APP_BROWSER),
-                ),
-                SettingsSection(
-                    title = R.string.settings_panel_gestures_title,
-                    settings = listOf(
-                        Setting.READER_SWIPE_DOWN,
-                        Setting.READER_SWIPE_UP,
-                        Setting.HORIZONTAL_PAGINATION,
-                    ),
-                ),
-            )
-
             SettingsPanel.Display -> listOf(
                 SettingsSection(
                     title = R.string.theme_menu_label,
@@ -145,15 +117,16 @@ object SettingsRegistry {
                     title = R.string.settings_section_e_ink,
                     settings = listOf(
                         Setting.REDUCE_MOTION,
-                        Setting.TAP_TO_PAGE,
                         Setting.E_INK_SCROLLBAR,
-                        Setting.PAGE_TURN_KEYS,
-                        Setting.KEEP_SCREEN_ON,
                     ),
                 ),
             )
 
             SettingsPanel.Advanced -> listOf(
+                SettingsSection(
+                    title = R.string.settings_section_browser,
+                    settings = listOf(Setting.IN_APP_BROWSER),
+                ),
                 SettingsSection(
                     title = R.string.settings_section_storage,
                     settings = listOf(Setting.AUTO_DELETE, Setting.CLEAR_ARTICLES),
@@ -217,20 +190,9 @@ object SettingsRegistry {
             Setting.MARK_ALL_READ_POSITION -> R.string.mark_all_read_button_position
             Setting.FILTERS -> R.string.filters_title
             Setting.UNREAD_BADGES -> R.string.settings_panel_unread_counts_title
-            Setting.READER_STYLE -> R.string.article_style_options
-            Setting.READER_IMAGES -> R.string.reader_image_visibility_label
-            Setting.STICKY_FULL_CONTENT -> R.string.settings_option_full_content_title
-            Setting.PIN_TOOLBARS -> R.string.settings_options_reader_pin_top_toolbar
-            Setting.RENDER_MATH -> R.string.settings_reader_render_math_title
             Setting.IN_APP_BROWSER -> R.string.settings_option_in_app_browser
-            Setting.READER_SWIPE_DOWN -> R.string.settings_gestures_reader_swipe_down
-            Setting.READER_SWIPE_UP -> R.string.settings_gestures_reader_swipe_up
-            Setting.HORIZONTAL_PAGINATION -> R.string.settings_gestures_enable_horizontal_pagination_title
             Setting.REDUCE_MOTION -> R.string.settings_reduce_motion_title
-            Setting.TAP_TO_PAGE -> R.string.settings_e_ink_tap_to_page_title
             Setting.E_INK_SCROLLBAR -> R.string.settings_e_ink_scrollbar_title
-            Setting.PAGE_TURN_KEYS -> R.string.settings_e_ink_page_turn_keys_title
-            Setting.KEEP_SCREEN_ON -> R.string.settings_e_ink_keep_screen_on_title
             Setting.THEME_MODE -> R.string.theme_mode_label
             Setting.THEME -> R.string.theme_menu_label
             Setting.PURE_BLACK -> R.string.settings_pure_black_dark_mode
@@ -250,14 +212,6 @@ object SettingsRegistry {
                 R.string.article_list_sort_oldest_first,
             )
 
-            Setting.READER_STYLE -> listOf(
-                R.string.article_font_menu_label,
-                R.string.article_font_scale_label,
-                R.string.article_style_text_section,
-                R.string.article_style_title_section,
-                R.string.article_style_title_follow_body_font,
-            )
-
             Setting.THEME_MODE -> listOf(
                 R.string.theme_mode_light,
                 R.string.theme_mode_dark,
@@ -269,13 +223,8 @@ object SettingsRegistry {
                 R.string.mark_read_position_toolbar,
                 R.string.mark_read_position_floating_action_button,
             )
-            Setting.STICKY_FULL_CONTENT -> listOf(R.string.settings_option_full_content_subtitle)
-            Setting.HORIZONTAL_PAGINATION -> listOf(R.string.settings_gestures_enable_horizontal_pagination_subtitle)
             Setting.REDUCE_MOTION -> listOf(R.string.settings_reduce_motion_subtitle)
-            Setting.TAP_TO_PAGE -> listOf(R.string.settings_e_ink_tap_to_page_subtitle)
             Setting.E_INK_SCROLLBAR -> listOf(R.string.settings_e_ink_scrollbar_subtitle)
-            Setting.PAGE_TURN_KEYS -> listOf(R.string.settings_e_ink_page_turn_keys_subtitle)
-            Setting.KEEP_SCREEN_ON -> listOf(R.string.settings_e_ink_keep_screen_on_subtitle)
             Setting.AUTO_DELETE -> listOf(R.string.settings_option_auto_delete_articles_title)
             Setting.FILTERS -> listOf(R.string.filters_supporting_text)
             Setting.UNREAD_BADGES -> listOf(

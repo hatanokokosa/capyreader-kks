@@ -320,65 +320,6 @@ class ArticleRecords(
         return database.articlesQueries.filterUnreadStatuses(ids).executeAsList()
     }
 
-    /**
-     * The previous/next article id relative to [articleID] in the order/membership [filter] shows.
-     * [since] is the session cutoff (keeps this-session reads/unstars pinned), matching the list.
-     */
-    fun neighbors(
-        filter: ArticleFilter,
-        sortOrder: SortOrder,
-        since: java.time.OffsetDateTime?,
-        articleID: String,
-        query: String? = null,
-    ): Pair<String?, String?> {
-        return when (filter) {
-            is ArticleFilter.Articles -> byStatus.neighbors(
-                filter.articleStatus,
-                sortOrder = sortOrder,
-                since = since,
-                articleID = articleID,
-                query = query,
-            )
-
-            is ArticleFilter.Feeds -> byFeed.neighbors(
-                feedIDs = listOf(filter.feedID),
-                status = filter.feedStatus,
-                sortOrder = sortOrder,
-                since = since,
-                priority = FeedPriority.FEED,
-                articleID = articleID,
-                query = query,
-            )
-
-            is ArticleFilter.Folders -> byFeed.neighbors(
-                feedIDs = folderFeedIDs(filter),
-                status = filter.status,
-                sortOrder = sortOrder,
-                since = since,
-                priority = FeedPriority.CATEGORY,
-                articleID = articleID,
-                query = query,
-            )
-
-            is ArticleFilter.SavedSearches -> bySavedSearch.neighbors(
-                savedSearchID = filter.savedSearchID,
-                status = filter.status,
-                sortOrder = sortOrder,
-                since = since,
-                articleID = articleID,
-                query = query,
-            )
-
-            is ArticleFilter.Today -> byToday.neighbors(
-                status = filter.status,
-                sortOrder = sortOrder,
-                since = since,
-                articleID = articleID,
-                query = query,
-            )
-        }
-    }
-
     fun unreadArticleIDs(
         filter: ArticleFilter,
         range: MarkRead,

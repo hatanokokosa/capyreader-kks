@@ -23,7 +23,7 @@ import com.capyreader.app.BuildConfig
 import com.capyreader.app.setupCommonModules
 import com.capyreader.app.ui.CrashReporting
 import com.capyreader.app.ui.LocalLinkOpener
-import com.capyreader.app.ui.articles.detail.CapyPlaceholder
+import com.capyreader.app.ui.components.CapyPlaceholder
 import com.capyreader.app.ui.isSinglePane
 import com.capyreader.app.ui.provideLinkOpener
 import com.capyreader.app.ui.settings.panels.AboutSettingsPanel
@@ -124,7 +124,6 @@ fun SettingsView(
 
                             SettingsPanel.Account,
                             SettingsPanel.ArticleList,
-                            SettingsPanel.Reader,
                             SettingsPanel.Display,
                             SettingsPanel.Advanced -> RegistryPanel(
                                 panel = panel,

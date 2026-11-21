@@ -11,8 +11,9 @@ import com.jocmp.capy.ArticleStatus
  * The article id is the resource, so it's a path segment (percent-encoded by the caller, since
  * article ids are URLs; [Uri] decodes it back). The feed is optional context as a query param.
  *
- * - `capy://article/<articleID>` (optionally `?feedID=<feedID>`) → list + the article reader.
- *   With `feedID` the list is that feed; without it, the All list.
+ * - `capy://article/<articleID>` (optionally `?feedID=<feedID>`) → the list containing the
+ *   article. With `feedID` the list is that feed; without it, the All list. Article links have no
+ *   reader target anymore, so the list is the closest valid destination.
  * - `capy://articles` → the All list.
  * - `capy://articles/unread` → the Unread list.
  *
@@ -50,7 +51,7 @@ object DeepLink {
 
         return when (uri.host) {
             "article" -> {
-                val articleID = uri.pathSegments.firstOrNull() ?: return null
+                uri.pathSegments.firstOrNull() ?: return null
                 val feedID = uri.getQueryParameter("feedID")
                 val list = if (!feedID.isNullOrBlank()) {
                     Route.ArticleList(
@@ -63,7 +64,7 @@ object DeepLink {
                 } else {
                     Route.ArticleList(ArticleFilter.default())
                 }
-                listOf(list, Route.ArticleDetail(articleID))
+                listOf(list)
             }
 
             "articles" -> {

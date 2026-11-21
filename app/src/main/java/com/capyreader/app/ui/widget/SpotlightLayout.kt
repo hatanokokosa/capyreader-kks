@@ -208,7 +208,7 @@ private fun Context.openAll() =
     )
 
 private fun Context.openArticle(entry: SpotlightEntry): Action {
-    return if (entry.openInBrowser && entry.articleURL != null) {
+    return if (entry.articleURL != null) {
         actionStartActivity(
             Intent(this, OpenArticleInBrowserActivity::class.java).apply {
                 putExtra(ARTICLE_ID_KEY, entry.id)
@@ -245,7 +245,6 @@ fun SpotlightLayoutPreview() {
                 title = "\"Hello, World\"",
                 imageURL = null,
                 articleURL = "https://www.nasa.gov/image-article/hello-world/",
-                openInBrowser = false,
             ),
             imageBitmap = previewBitmap,
         )
@@ -265,7 +264,6 @@ fun SpotlightLayoutTextOnlyPreview() {
                 title = "Circular Star Trails Over the Austrian Alps",
                 imageURL = null,
                 articleURL = "https://www.nasa.gov/image-article/hello-world/",
-                openInBrowser = false,
             ),
             imageBitmap = null,
         )
@@ -290,7 +288,6 @@ fun SpotlightLayoutDarkPreview() {
                 title = "Circular Star Trails",
                 imageURL = null,
                 articleURL = "https://www.nasa.gov",
-                openInBrowser = false,
             ),
             imageBitmap = null,
         )

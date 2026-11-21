@@ -28,33 +28,33 @@ class BackStackPopTest {
 
     @Test
     fun `pop with key is a no-op on a repeated call`() {
-        val detail = Route.ArticleDetail("article-1")
-        val backStack = mutableListOf<NavKey>(list, detail)
+        val settings = Route.Settings
+        val backStack = mutableListOf<NavKey>(list, settings)
 
-        backStack.pop(detail)
-        backStack.pop(detail)
+        backStack.pop(settings)
+        backStack.pop(settings)
 
         assertEquals(listOf(list), backStack)
     }
 
     @Test
     fun `pop with key ignores an entry that is not on top`() {
-        val detail = Route.ArticleDetail("article-1")
-        val video = Route.VideoViewer("https://example.com/video.mp4")
-        val backStack = mutableListOf<NavKey>(list, detail, video)
+        val settings = Route.Settings
+        val addAccount = Route.AddAccount
+        val backStack = mutableListOf<NavKey>(list, settings, addAccount)
 
-        backStack.pop(detail)
+        backStack.pop(settings)
 
-        assertEquals(listOf(list, detail, video), backStack)
+        assertEquals(listOf(list, settings, addAccount), backStack)
     }
 
     @Test
     fun `popIf pops a top entry whose key was swapped in place`() {
-        val backStack = mutableListOf<NavKey>(list, Route.ArticleDetail("article-1"))
-        backStack[backStack.lastIndex] = Route.ArticleDetail("article-2")
+        val backStack = mutableListOf<NavKey>(list, Route.Settings)
+        backStack[backStack.lastIndex] = Route.AddAccount
 
-        backStack.popIf { it is Route.ArticleDetail }
-        backStack.popIf { it is Route.ArticleDetail }
+        backStack.popIf { it is Route.Settings }
+        backStack.popIf { it is Route.AddAccount }
 
         assertEquals(listOf(list), backStack)
     }

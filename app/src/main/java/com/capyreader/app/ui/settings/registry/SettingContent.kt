@@ -15,10 +15,8 @@ import com.capyreader.app.ui.settings.panels.CrashLogsRow
 import com.capyreader.app.ui.settings.panels.CrashReportingRow
 import com.capyreader.app.ui.settings.panels.EInkScrollbarRow
 import com.capyreader.app.ui.settings.panels.FiltersRow
-import com.capyreader.app.ui.settings.panels.HorizontalPaginationRow
 import com.capyreader.app.ui.settings.panels.ImagePreviewRow
 import com.capyreader.app.ui.settings.panels.InAppBrowserRow
-import com.capyreader.app.ui.settings.panels.KeepScreenOnRow
 import com.capyreader.app.ui.settings.panels.LastRefreshedRow
 import com.capyreader.app.ui.settings.panels.ListSwipeEndRow
 import com.capyreader.app.ui.settings.panels.ListSwipeStartRow
@@ -27,14 +25,7 @@ import com.capyreader.app.ui.settings.panels.MarkAllReadPositionRow
 import com.capyreader.app.ui.settings.panels.MarkReadOnScrollRow
 import com.capyreader.app.ui.settings.panels.OPMLExportRow
 import com.capyreader.app.ui.settings.panels.OPMLImportRow
-import com.capyreader.app.ui.settings.panels.PageTurnKeysRow
-import com.capyreader.app.ui.settings.panels.PinToolbarsRow
-import com.capyreader.app.ui.settings.panels.RenderMathRow
 import com.capyreader.app.ui.settings.panels.PureBlackRow
-import com.capyreader.app.ui.settings.panels.ReaderImagesRow
-import com.capyreader.app.ui.settings.panels.ReaderStyleRow
-import com.capyreader.app.ui.settings.panels.ReaderSwipeDownRow
-import com.capyreader.app.ui.settings.panels.ReaderSwipeUpRow
 import com.capyreader.app.ui.settings.panels.ReduceMotionRow
 import com.capyreader.app.ui.settings.panels.RefreshIntervalRow
 import com.capyreader.app.ui.settings.panels.RefreshOnWiFiOnlyRow
@@ -45,8 +36,6 @@ import com.capyreader.app.ui.settings.panels.ShowFeedNameRow
 import com.capyreader.app.ui.settings.panels.ShowSummaryRow
 import com.capyreader.app.ui.settings.panels.SortOrderSetting
 import com.capyreader.app.ui.settings.panels.StarredExportRow
-import com.capyreader.app.ui.settings.panels.StickyFullContentRow
-import com.capyreader.app.ui.settings.panels.TapToPageRow
 import com.capyreader.app.ui.settings.panels.TestNotificationSettingRow
 import com.capyreader.app.ui.settings.panels.ThemeModeRow
 import com.capyreader.app.ui.settings.panels.ThemeRow
@@ -85,24 +74,13 @@ fun SettingContent(
         Setting.MARK_ALL_READ_POSITION -> MarkAllReadPositionRow()
         Setting.FILTERS -> FiltersRow()
         Setting.UNREAD_BADGES -> UnreadBadgesRow()
-        Setting.READER_STYLE -> ReaderStyleRow()
-        Setting.READER_IMAGES -> ReaderImagesRow()
-        Setting.STICKY_FULL_CONTENT -> StickyFullContentRow()
-        Setting.PIN_TOOLBARS -> PinToolbarsRow()
-        Setting.RENDER_MATH -> RenderMathRow()
         Setting.IN_APP_BROWSER -> InAppBrowserRow()
-        Setting.READER_SWIPE_DOWN -> ReaderSwipeDownRow()
-        Setting.READER_SWIPE_UP -> ReaderSwipeUpRow()
-        Setting.HORIZONTAL_PAGINATION -> HorizontalPaginationRow()
         Setting.THEME_MODE -> ThemeModeRow()
         Setting.THEME -> ThemeRow()
         Setting.PURE_BLACK -> PureBlackRow()
         Setting.ACCENT_COLORS -> AccentColorsRow()
         Setting.REDUCE_MOTION -> ReduceMotionRow()
-        Setting.TAP_TO_PAGE -> TapToPageRow()
         Setting.E_INK_SCROLLBAR -> EInkScrollbarRow()
-        Setting.PAGE_TURN_KEYS -> PageTurnKeysRow()
-        Setting.KEEP_SCREEN_ON -> KeepScreenOnRow()
         Setting.AUTO_DELETE -> AutoDeleteRow()
         Setting.CLEAR_ARTICLES -> ClearArticlesRow()
         Setting.CRASH_REPORTING -> CrashReportingRow()

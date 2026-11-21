@@ -43,15 +43,13 @@ class FeedRecordsTest {
     @Test
     fun updateStickyFullContent() = runTest {
         val records = FeedRecords(database)
-        var feed = FeedFixture(database, records = records).create()
+        val feed = FeedFixture(database, records = records).create()
 
-        assertFalse(feed.enableStickyFullContent)
+        assertFalse(records.isFullContentEnabled(feed.id))
 
         records.updateStickyFullContent(enabled = true, feedID = feed.id)
 
-        feed = records.find(feed.id)!!
-
-        assertTrue(feed.enableStickyFullContent)
+        assertTrue(records.isFullContentEnabled(feed.id))
     }
 
     @Test
@@ -66,15 +64,14 @@ class FeedRecordsTest {
 
         assertEquals(
             expected = setOf(true),
-            actual = feeds.map { it.enableStickyFullContent }.toSet()
+            actual = feeds.map { records.isFullContentEnabled(it.id) }.toSet()
         )
 
         records.clearStickyFullContent()
 
-        val updated = feeds.map { records.find(it.id)!! }
         assertEquals(
             expected = setOf(false),
-            actual = updated.map { it.enableStickyFullContent }.toSet()
+            actual = feeds.map { records.isFullContentEnabled(it.id) }.toSet()
         )
     }
 

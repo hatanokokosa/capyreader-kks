@@ -51,9 +51,6 @@ class GeneralSettingsViewModel(
     var markReadButtonPosition by mutableStateOf(appPreferences.articleListOptions.markReadButtonPosition.get())
         private set
 
-    var enableStickyFullContent by mutableStateOf(appPreferences.enableStickyFullContent.get())
-        private set
-
     var markReadOnScroll by mutableStateOf(appPreferences.articleListOptions.markReadOnScroll.get())
         private set
 
@@ -116,18 +113,6 @@ class GeneralSettingsViewModel(
         appPreferences.articleListOptions.markReadOnScroll.set(enabled)
 
         markReadOnScroll = enabled
-    }
-
-    fun updateStickyFullContent(enable: Boolean) {
-        appPreferences.enableStickyFullContent.set(enable)
-
-        enableStickyFullContent = enable
-
-        if (!enable) {
-            viewModelScope.launch(Dispatchers.IO) {
-                account.clearStickyFullContent()
-            }
-        }
     }
 
     fun clearAllArticles() {

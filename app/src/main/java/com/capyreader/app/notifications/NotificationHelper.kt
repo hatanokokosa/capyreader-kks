@@ -159,9 +159,9 @@ private fun NotificationManagerCompat.tryNotify(id: Int, notification: Notificat
 }
 
 private fun ArticleNotification.contentIntent(context: Context): PendingIntent {
-    val notifyIntent = if (openInBrowser && !url.isNullOrBlank()) {
-        // Feeds flagged "open in browser" route through the activity that opens the link and marks
-        // the article read, matching the in-app list tap and the widgets.
+    val notifyIntent = if (!url.isNullOrBlank()) {
+        // Route through the activity that opens the link and marks the article read, matching
+        // the in-app list tap and the widgets.
         Intent(context, OpenArticleInBrowserActivity::class.java).apply {
             putExtra(NotificationHelper.ARTICLE_ID_KEY, articleID)
             putExtra(OpenArticleInBrowserActivity.ARTICLE_URL_KEY, url)

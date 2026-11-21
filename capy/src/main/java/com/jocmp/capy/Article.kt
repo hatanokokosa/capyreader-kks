@@ -20,22 +20,7 @@ data class Article(
     val faviconURL: String? = null,
     val feedURL: String? = null,
     val siteURL: String? = null,
-    val enableStickyFullContent: Boolean = false,
-    val openInBrowser: Boolean = false,
-    val fullContent: FullContentState = FullContentState.NONE,
-    val content: String = contentHTML.ifBlank { summary },
     val enclosures: List<Enclosure> = emptyList(),
     val enclosureType: EnclosureType? = null,
     val isReadLater: Boolean = false,
-) {
-    val defaultContent = contentHTML.ifBlank { summary }
-
-    val parseFullContent = fullContent == FullContentState.LOADED
-
-    enum class FullContentState {
-        NONE,
-        LOADING,
-        LOADED,
-        ERROR,
-    }
-}
+)

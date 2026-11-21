@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.capyreader.app.common.ImagePreview
 import com.capyreader.app.preferences.AppPreferences
 import com.capyreader.app.preferences.BadgeStyle
-import com.capyreader.app.preferences.ReaderImageVisibility
 import com.capyreader.app.preferences.ThemeMode
 import com.capyreader.app.ui.articles.ArticleListFontScale
 import com.jocmp.capy.Account
@@ -62,13 +61,6 @@ class DisplaySettingsViewModel(
     val shortenTitles: Boolean
         get() = _shortenTitles.value
 
-    val pinArticleBars = appPreferences.readerOptions.pinToolbars
-
-    val renderMath = appPreferences.readerOptions.renderMath
-
-    var imageVisibility by mutableStateOf(appPreferences.readerOptions.imageVisibility.get())
-        private set
-
     fun updateThemeMode(themeMode: ThemeMode) {
         appPreferences.themeMode.set(themeMode)
         this.themeMode = themeMode
@@ -82,14 +74,6 @@ class DisplaySettingsViewModel(
     fun updateAccentColors(enable: Boolean) {
         appPreferences.accentColors.set(enable)
         this.accentColors = enable
-    }
-
-    fun updateRenderMath(enabled: Boolean) {
-        appPreferences.readerOptions.renderMath.set(enabled)
-    }
-
-    fun updatePinArticleBars(pinBars: Boolean) {
-        appPreferences.readerOptions.pinToolbars.set(pinBars)
     }
 
     fun updateFontScale(fontScale: ArticleListFontScale) {
@@ -108,12 +92,6 @@ class DisplaySettingsViewModel(
         appPreferences.articleListOptions.showSummary.set(show)
 
         _showSummary.value = show
-    }
-
-    fun updateImageVisibility(option: ReaderImageVisibility) {
-        appPreferences.readerOptions.imageVisibility.set(option)
-
-        this.imageVisibility = option
     }
 
     fun updateFeedIcons(show: Boolean) {

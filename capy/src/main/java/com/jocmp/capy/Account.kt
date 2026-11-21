@@ -362,26 +362,6 @@ data class Account(
         )
     }
 
-    /**
-     * Previous/next article id relative to [articleID] for the reader's swipe navigation.
-     * Suspends onto IO so the (synchronous) query never runs on the main thread.
-     */
-    suspend fun neighbors(
-        filter: ArticleFilter,
-        sortOrder: SortOrder,
-        since: java.time.OffsetDateTime?,
-        articleID: String,
-        query: String? = null,
-    ): Pair<String?, String?> = withIOContext {
-        articleRecords.neighbors(
-            filter = filter,
-            sortOrder = sortOrder,
-            since = since,
-            articleID = articleID,
-            query = query,
-        )
-    }
-
     fun countUnread(
         filter: ArticleFilter,
         query: String?,
@@ -499,10 +479,6 @@ data class Account(
 
     suspend fun expandFolder(folderName: String, expanded: Boolean) {
         folderRecords.expand(folderName, expanded)
-    }
-
-    suspend fun updateOpenInBrowser(feedID: String, enabled: Boolean) {
-        feedRecords.updateOpenInBrowser(feedID, enabled)
     }
 
     suspend fun toggleFeedUnreadBadge(feedID: String, enabled: Boolean) {
